@@ -1,6 +1,7 @@
 import { Outlet, Link } from "react-router-dom";
 import { ContextCart } from "../services/ContextCart";
 import { useContext } from "react";
+import { FloatingChatBot } from "../components/FloatingChatBot";
 
 export const MainLayout = () => {
     const { carrito } = useContext(ContextCart);
@@ -18,7 +19,6 @@ export const MainLayout = () => {
                     <Link to="/categorias" className="nav-link">Colecciones</Link>
                     <Link to="/contacto" className="nav-link">Contacto</Link>
                     <Link to="/adminProductos" className="nav-link">Admin</Link>
-                    <Link to="/chatbot" className="nav-link">Asistente</Link>
                     <Link to="/carrito" className="nav-link">
                         Carrito ({cantidadItems})
                     </Link>
@@ -31,6 +31,8 @@ export const MainLayout = () => {
             <main className="main-content">
                 <Outlet />
             </main>
+
+            <FloatingChatBot />
 
             <footer>
                 <div className="footer-content">

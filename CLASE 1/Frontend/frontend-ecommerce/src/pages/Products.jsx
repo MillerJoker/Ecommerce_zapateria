@@ -42,7 +42,7 @@ export const Productos = () => {
             <div className="card-grid">
                 {productosFiltrados.length > 0 ? (
                     productosFiltrados.map((prod) => (
-                        <CardProduct key={prod.id} product={prod} />
+                        <CardProduct key={prod.id_producto} product={prod} />
                     ))
                 ) : (
                     <p style={{ gridColumn: '1/-1' }}>Cargando productos...</p>

@@ -5,26 +5,35 @@ import { ContextCart } from "../services/ContextCart";
 export const CardProduct = ({ product }) => {
     const { agregarAlCarrito } = useContext(ContextCart);
 
+    // 1. Aseguramos que el precio sea un número válido antes de usar toFixed
+    const precioNumerico = Number(product.precio) || 0;
+
+    // 2. Mapeamos el stock_total que viene de tu consulta SQL en el Backend
+    const tieneStock = product.stock_total > 0;
+
     return (
-        <div className="card">
+        <div className="card" style={{ position: 'relative' }}> {/* Añadido position relative para que la etiqueta "Oferta" se posicione bien */}
             {/* Si tuviéramos imágenes reales usaríamos product.imagen, aquí simulamos una caja de producto */}
             <div className="card-img" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f0ede9', color: '#8d6e63', fontSize: '0.8rem' }}>
                 {product.categoria || "Calzado"}
             </div>
             
             <h3 className="card-title">{product.nombre}</h3>
-            <p className="card-price">${product.precio.toFixed(2)}</p>
+            {/* CORRECCIÓN DEL ERROR CRÍTICO: Usamos la variable casteada a Número */}
+            <p className="card-price">${precioNumerico.toFixed(2)}</p>
 
             <div className="card-actions">
                 <button 
                     className="btn btn-primary" 
                     style={{ width: '100%' }}
                     onClick={() => agregarAlCarrito(product)}
-                    disabled={product.stock === 0}
+                    /* CORRECCIÓN: Tu backend devuelve 'stock_total', no 'stock' */
+                    disabled={!tieneStock}
                 >
-                    {product.stock === 0 ? "Agotado" : "Añadir"}
+                    {tieneStock ? "Añadir" : "Agotado"}
                 </button>
-                <Link to={`/productos/${product.id}`} className="btn btn-outline" style={{ width: '100%' }}>
+                {/* CORRECCIÓN: Cambiado product.id por product.id_producto */}
+                <Link to={`/productos/${product.id_producto}`} className="btn btn-outline" style={{ width: '100%' }}>
                     Detalles
                 </Link>
             </div>

@@ -43,7 +43,7 @@ export const Categorias = () => {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
-                    body: JSON.stringify({ nombre: nuevaCategoria })
+                    body: JSON.stringify({ nombre_categoria: nuevaCategoria })
                 });
             const data = await res.json();
             if (res.ok) {
@@ -106,8 +106,8 @@ export const Categorias = () => {
             <h3>Listado de Categorias</h3>
             <ul>
                 {categorias.map((cat) => (
-                    <li key={cat.id}>
-                        <h3>{cat.nombre}</h3>
+                    <li key={cat.id_categoria}>
+                        <h3>{cat.nombre_categoria}</h3>
                         <button 
                         onClick={() => handleEliminar(cat.id)}
                         >ELIMINAR</button>

@@ -17,7 +17,6 @@ import { Categorias } from './pages/Categorias.jsx'
 import { Carrito } from './pages/Carrito.jsx'
 import {CartProvider} from './services/ContextCart.jsx'
 import { AdminProductos } from './pages/AdminProductos.jsx'
-import { ChatBot } from './pages/ChatBot.jsx'
 
 function App() {
 
@@ -29,14 +28,13 @@ function App() {
           <Route path='/Login' element={<Login />} />
           <Route path='/Register' element={<Register />} />
           
-          <Route path="/" element={<MainLayout />}>
+            <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
             <Route path='/contacto' element={<Contact />} />
             <Route path='/productos' element={<Productos />} />
             <Route path='/productos/:id' element={<DetailProduct />} />
             <Route path='/categorias' element={<Categorias />}/>
             <Route path='/adminProductos' element={<AdminProductos />}/>
-            <Route path='/chatbot' element={<ChatBot />}/>
             <Route path='/carrito' element={<Carrito />}/>
             <Route path="/*" element={<NotFound />} />
           </Route>

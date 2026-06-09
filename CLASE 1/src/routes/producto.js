@@ -9,7 +9,7 @@ router.get("/",asynHandler(obtenerProductos));
 router.get("/:id",asynHandler(obtenerProductosbyId));
 router.post("/",
 verifyToken,
-validarCampos(["categoria_id","nombre","descripcion","precio","stock"]),
+validarCampos(["id_categoria","nombre","precio"]),
 asynHandler(crearProducto)
 )
 
