@@ -1,0 +1,99 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+export const Register = () => {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError("");
+
+        try {
+            const response = await fetch("http://localhost:3000/api/v1/auth/registro", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    nombre: name,
+                    email: email,
+                    password: password,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Ocurrió un error al registrarse");
+            }
+
+            if (data.token) {
+                localStorage.setItem("token", data.token);
+            }
+
+            alert("¡Bienvenido al club Dr. Pie!");
+            navigate("/productos");
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    return (
+        <div className="container" style={{ textAlign: "center" }}>
+            <div className="form-container">
+                <h1 style={{ marginBottom: '0.5rem' }}>Únase a Dr. Pie</h1>
+                <p style={{ marginBottom: '2rem', opacity: 0.7 }}>Forme parte de nuestra distinguida clientela</p>
+
+                {error && <p style={{ color: "red", marginBottom: '1rem' }}>{error}</p>}
+
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label>Nombre Completo</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={name}
+                            required
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="John Doe"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            className="form-control"
+                            value={email}
+                            required
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="su@email.com"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Contraseña</label>
+                        <input
+                            type="password"
+                            className="form-control"
+                            value={password}
+                            required
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="••••••••"
+                        />
+                    </div>
+
+                    <div className="form-actions">
+                        <button type="submit" className="btn btn-primary">Registrarse</button>
+                        <Link to="/Login" className="btn btn-outline">¿Ya tiene cuenta? Inicie sesión</Link>
+                        <Link to="/productos" style={{ fontSize: '0.8rem', marginTop: '1rem', color: 'gray' }}>
+                            Regresar a la tienda
+                        </Link>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
