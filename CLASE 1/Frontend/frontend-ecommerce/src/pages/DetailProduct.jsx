@@ -52,14 +52,22 @@ export const DetailProduct = () => {
         <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto", textAlign: "center" }}>
             <div style={{ border: "1px solid #eaeaea", padding: "30px", borderRadius: "12px", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
                 
-                {/* Categoría accesible */}
                 <span style={{ fontSize: "12px", textTransform: "uppercase", color: "blue", fontWeight: "bold", display: "block", marginBottom: "10px" }}>
                     {producto.categoria}
                 </span>
 
+                {producto.imagen_url && (
+                    <div style={{ marginBottom: "20px", borderRadius: "8px", overflow: "hidden", maxHeight: "400px" }}>
+                        <img 
+                            src={producto.imagen_url} 
+                            alt={producto.nombre} 
+                            style={{ width: "100%", height: "auto", objectFit: "contain" }} 
+                        />
+                    </div>
+                )}
+
                 <h1 style={{ marginBottom: "15px" }}>{producto.nombre}</h1>
                 
-                {/* Control de stock visualmente descriptivo */}
                 <p style={{ fontSize: "14px", color: producto.stock > 0 ? "green" : "red", fontWeight: "600" }}>
                     {producto.stock > 0 ? `Unidades disponibles: ${producto.stock}` : "Producto Agotado"}
                 </p>
@@ -73,7 +81,6 @@ export const DetailProduct = () => {
                     <p style={{ color: "#555", fontSize: "14px", lineHeight: "1.5", margin: 0 }}>{producto.descripcion}</p>
                 </div>
 
-                {/* Contenedor de acciones */}
                 <div style={{ display: "flex", justifyContent: "center", gap: "15px" }}>
                     <button
                         onClick={() => agregarAlCarrito(producto)}
@@ -93,7 +100,6 @@ export const DetailProduct = () => {
                         {producto.stock === 0 ? "Agotado" : "Añadir al Carrito"}
                     </button>
 
-                    {/* Enlace semánticamente correcto sin botones anidados */}
                     <Link
                         to="/productos"
                         style={{

@@ -2,13 +2,24 @@ import pool from "../db/connection.js";
 
 //Get
 export const obtenerProductos = async(req,res) => {
-    const[row]= await pool.query(`
-        SELECT p.id_producto, p.nombre, p.descripcion, p.marca, p.precio, p.imagen_url, p.activo, c.nombre_categoria AS categoria, 
-        (SELECT SUM(stock) FROM variantes_producto WHERE id_producto = p.id_producto) AS stock_total
-        FROM productos p 
-        INNER JOIN categorias c ON p.id_categoria = c.id_categoria`    
-    );
-    res.json({total : row.length, productos:row});
+    try {
+        const { todo } = req.query;
+        let query = `
+            SELECT p.id_producto, p.nombre, p.descripcion, p.marca, p.precio, p.imagen_url, p.activo, c.nombre_categoria AS categoria, 
+            (SELECT SUM(stock) FROM variantes_producto WHERE id_producto = p.id_producto) AS stock_total
+            FROM productos p 
+            INNER JOIN categorias c ON p.id_categoria = c.id_categoria
+        `;
+
+        if (todo !== 'true') {
+            query += ' WHERE c.activo = 1 AND p.activo = 1';
+        }
+
+        const [row] = await pool.query(query);
+        res.json({ total: row.length, productos: row });
+    } catch (error) {
+        res.status(500).json({ error: "Error al obtener los productos" });
+    }
 }
 
 //Get By ID

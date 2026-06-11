@@ -45,7 +45,7 @@ export const Login = () => {
                 {mensajeIncorrecto && <p style={{ color: "red", marginBottom: '1rem' }}>{mensajeIncorrecto}</p>}
 
                 <form onSubmit={handleSubmit}>
-                    <div className="form-group">
+                    <div className="form-group" style={{ textAlign: "left", marginBottom: "1rem" }}>
                         <label>Email</label>
                         <input
                             type="email"
@@ -56,7 +56,7 @@ export const Login = () => {
                             placeholder="su@email.com"
                         />
                     </div>
-                    <div className="form-group">
+                    <div className="form-group" style={{ textAlign: "left", marginBottom: "1.5rem" }}>
                         <label>Contraseña</label>
                         <input
                             type="password"
@@ -68,10 +68,52 @@ export const Login = () => {
                         />
                     </div>
                     
-                    <div className="form-actions">
-                        <button type="submit" className="btn btn-primary">Iniciar Sesión</button>
-                        <Link to="/Register" className="btn btn-outline">Crear Cuenta</Link>
-                        <Link to="/" style={{ fontSize: '0.8rem', marginTop: '1rem', color: 'gray' }}>
+                    {/* CORRECCIÓN: Contenedor con distribución en columna (Flexbox vertical) */}
+                    <div className="form-actions" style={{ 
+                        display: "flex", 
+                        flexDirection: "column", 
+                        gap: "0.75rem", 
+                        marginTop: "1.5rem",
+                        alignItems: "stretch" 
+                    }}>
+                        
+                        {/* El botón de Iniciar Sesión abarcará todo el ancho */}
+                        <button 
+                            type="submit" 
+                            className="btn btn-primary" 
+                            style={{ width: "100%", padding: "0.75rem", boxSizing: "border-box" }}
+                        >
+                            Iniciar Sesión
+                        </button>
+
+                        {/* El botón de Crear Cuenta abarcará todo el ancho ordenadamente justo abajo */}
+                        <Link 
+                            to="/Register" 
+                            className="btn btn-outline" 
+                            style={{ 
+                                width: "100%", 
+                                padding: "0.75rem", 
+                                boxSizing: "border-box", 
+                                textDecoration: "none", 
+                                display: "inline-block",
+                                textAlign: "center"
+                            }}
+                        >
+                            Crear Cuenta
+                        </Link>
+
+                        {/* Enlace de regreso completamente centrado en la parte inferior */}
+                        <Link 
+                            to="/" 
+                            style={{ 
+                                fontSize: '0.85rem', 
+                                marginTop: '0.5rem', 
+                                color: 'gray', 
+                                textDecoration: "none",
+                                display: "block",
+                                textAlign: "center"
+                            }}
+                        >
                             Regresar a la tienda
                         </Link>
                     </div>

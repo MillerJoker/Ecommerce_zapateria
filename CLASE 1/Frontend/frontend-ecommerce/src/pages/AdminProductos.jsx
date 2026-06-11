@@ -10,7 +10,8 @@ export const AdminProductos = () => {
         nombre: "",
         descripcion: "",
         precio: "",
-        stock: ""
+        stock: "",
+        imagen_url: ""
     });
     
     const [editandoId, setEditandoId] = useState(null);
@@ -76,7 +77,7 @@ export const AdminProductos = () => {
 
             if (res.ok) {
                 setMensaje(`Producto ${editandoId ? 'actualizado' : 'creado'} con éxito`);
-                setForm({ categoria_id: "", nombre: "", descripcion: "", precio: "", stock: "" });
+                setForm({ categoria_id: "", nombre: "", descripcion: "", precio: "", stock: "", imagen_url: "" });
                 setEditandoId(null);
                 listarProductos();
             } else {
@@ -97,7 +98,8 @@ export const AdminProductos = () => {
             nombre: prod.nombre,
             descripcion: prod.descripcion,
             precio: prod.precio,
-            stock: prod.stock_total || 0 
+            stock: prod.stock_total || 0,
+            imagen_url: prod.imagen_url || ""
         });
     };
 
@@ -143,6 +145,8 @@ export const AdminProductos = () => {
                 <br /><br />
                 <input type="number" name="stock" placeholder="Stock" value={form.stock} onChange={handleChange} required />
                 <br /><br />
+                <input type="text" name="imagen_url" placeholder="URL de la Imagen" value={form.imagen_url} onChange={handleChange} />
+                <br /><br />
 
                 <button type="submit">
                     {editandoId ? "Actualizar Producto" : "Guardar Producto"}
@@ -153,6 +157,7 @@ export const AdminProductos = () => {
             <table border="1" style={{ width: "100%", borderCollapse: "collapse", marginTop: "10px" }}>
                 <thead>
                     <tr style={{ background: "#f2f2f2" }}>
+                        <th>Imagen</th>
                         <th>Nombre</th>
                         <th>Categoría</th>
                         <th>Stock</th>
@@ -162,6 +167,13 @@ export const AdminProductos = () => {
                 <tbody>
                     {productos.map((prod) => (
                         <tr key={prod.id_producto}>
+                            <td style={{ textAlign: "center" }}>
+                                {prod.imagen_url ? (
+                                    <img src={prod.imagen_url} alt={prod.nombre} style={{ width: "50px", height: "50px", objectFit: "cover" }} />
+                                ) : (
+                                    "Sin imagen"
+                                )}
+                            </td>
                             <td>{prod.nombre}</td>
                             <td>{prod.categoria}</td>
                             <td style={{ textAlign: "center" }}>{prod.stock_total ?? 0}</td>

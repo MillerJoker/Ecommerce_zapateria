@@ -51,7 +51,7 @@ export const Register = () => {
                 {error && <p style={{ color: "red", marginBottom: '1rem' }}>{error}</p>}
 
                 <form onSubmit={handleSubmit}>
-                    <div className="form-group">
+                    <div className="form-group" style={{ textAlign: "left", marginBottom: "1rem" }}>
                         <label>Nombre Completo</label>
                         <input
                             type="text"
@@ -62,7 +62,7 @@ export const Register = () => {
                             placeholder="John Doe"
                         />
                     </div>
-                    <div className="form-group">
+                    <div className="form-group" style={{ textAlign: "left", marginBottom: "1rem" }}>
                         <label>Email</label>
                         <input
                             type="email"
@@ -73,7 +73,7 @@ export const Register = () => {
                             placeholder="su@email.com"
                         />
                     </div>
-                    <div className="form-group">
+                    <div className="form-group" style={{ textAlign: "left", marginBottom: "1.5rem" }}>
                         <label>Contraseña</label>
                         <input
                             type="password"
@@ -85,10 +85,48 @@ export const Register = () => {
                         />
                     </div>
 
-                    <div className="form-actions">
-                        <button type="submit" className="btn btn-primary">Registrarse</button>
-                        <Link to="/Login" className="btn btn-outline">¿Ya tiene cuenta? Inicie sesión</Link>
-                        <Link to="/productos" style={{ fontSize: '0.8rem', marginTop: '1rem', color: 'gray' }}>
+                    {/* SOLUCIÓN AL DESBORDAMIENTO: Estructura vertical limpia con Flexbox */}
+                    <div className="form-actions" style={{ 
+                        display: "flex", 
+                        flexDirection: "column", 
+                        gap: "0.8rem", 
+                        marginTop: "1.5rem",
+                        alignItems: "stretch" 
+                    }}>
+                        <button 
+                            type="submit" 
+                            className="btn btn-primary"
+                            style={{ width: "100%", padding: "0.75rem", boxSizing: "border-box" }}
+                        >
+                            Registrarse
+                        </button>
+                        
+                        <Link 
+                            to="/Login" 
+                            className="btn btn-outline"
+                            style={{ 
+                                width: "100%", 
+                                padding: "0.75rem", 
+                                boxSizing: "border-box",
+                                textDecoration: "none",
+                                display: "inline-block",
+                                textAlign: "center"
+                            }}
+                        >
+                            ¿Ya tiene cuenta? Inicie sesión
+                        </Link>
+                        
+                        <Link 
+                            to="/productos" 
+                            style={{ 
+                                fontSize: '0.85rem', 
+                                marginTop: '0.5rem', 
+                                color: 'gray',
+                                textDecoration: "none",
+                                display: "block",
+                                textAlign: "center"
+                            }}
+                        >
                             Regresar a la tienda
                         </Link>
                     </div>
