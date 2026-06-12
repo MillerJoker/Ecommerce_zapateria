@@ -5,8 +5,6 @@
         try {
             const { todo } = req.query;
             let query = 'SELECT id_categoria, nombre_categoria, activo FROM categorias';
-            
-            // Si no se pide "todo", filtramos por las activas
             if (todo !== 'true') {
                 query += ' WHERE activo = 1';
             }

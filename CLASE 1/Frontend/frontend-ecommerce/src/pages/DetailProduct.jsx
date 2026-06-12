@@ -1,13 +1,17 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ContextCart } from "../services/ContextCart.jsx";
+import "../styles/DetailProduct.css";
 
 export const DetailProduct = () => {
-    const { id } = useParams(); // Obtiene el ID del producto desde la URL activa
+    const { id } = useParams(); 
     const [producto, setProducto] = useState(null);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState("");
     
+    const [colorSeleccionado, setColorSeleccionado] = useState(null);
+    const [tallaSeleccionada, setTallaSeleccionada] = useState(null);
+
     const { agregarAlCarrito } = useContext(ContextCart);
 
     useEffect(() => {
@@ -15,7 +19,7 @@ export const DetailProduct = () => {
             try {
                 setCargando(true);
                 setError("");
-                const URL_API = import.meta.env.VITE_PUBLIC_URL || "http://localhost:3000/api/v1";
+                const URL_API = import.meta.env.VITE_PUBLIC_URL;
                 const response = await fetch(`${URL_API}/productos/${id}`);
                 const data = await response.json();
 
@@ -35,88 +39,125 @@ export const DetailProduct = () => {
         fetchProductoIndividual();
     }, [id]);
 
-    if (cargando) {
-        return <div style={{ textAlign: "center", padding: "50px" }}><h3>Cargando detalles del producto...</h3></div>;
-    }
+    if (cargando) return <div style={{ textAlign: "center", padding: "100px" }}><h3>Cargando detalles del calzado...</h3></div>;
+    if (error || !producto) return <div style={{ textAlign: "center", padding: "100px" }}><p style={{ color: "red", fontWeight: "bold" }}>{error || "Producto no encontrado"}</p></div>;
 
-    if (error || !producto) {
-        return (
-            <div style={{ textAlign: "center", padding: "50px" }}>
-                <p role="alert" style={{ color: "red", fontWeight: "bold" }}>{error || "Producto no encontrado"}</p>
-                <Link to="/productos" style={{ color: "blue", textDecoration: "underline" }}>Volver al catálogo</Link>
-            </div>
-        );
-    }
+    const tieneStockGlobal = Number(producto.stock_total) > 0;
+
+    const coloresDisponibles = producto.variantes 
+        ? [...new Set(producto.variantes.map(v => v.color))] 
+        : [];
+
+    const variantesDelColorElegido = producto.variantes && colorSeleccionado
+        ? producto.variantes.filter(v => v.color === colorSeleccionado)
+        : [];
+
+    const handleAgregarAlCarrito = () => {
+        if (!colorSeleccionado || !tallaSeleccionada) return;
+        const productoEspecifico = {
+            ...producto,
+            color_elegido: colorSeleccionado,
+            talla_elegida: tallaSeleccionada
+        };
+        agregarAlCarrito(productoEspecifico);
+    };
 
     return (
-        <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto", textAlign: "center" }}>
-            <div style={{ border: "1px solid #eaeaea", padding: "30px", borderRadius: "12px", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+        <div className="product-detail-page">
+            <div className="product-detail-card">
                 
-                <span style={{ fontSize: "12px", textTransform: "uppercase", color: "blue", fontWeight: "bold", display: "block", marginBottom: "10px" }}>
-                    {producto.categoria}
-                </span>
-
                 {producto.imagen_url && (
-                    <div style={{ marginBottom: "20px", borderRadius: "8px", overflow: "hidden", maxHeight: "400px" }}>
-                        <img 
-                            src={producto.imagen_url} 
-                            alt={producto.nombre} 
-                            style={{ width: "100%", height: "auto", objectFit: "contain" }} 
-                        />
+                    <div className="product-image-wrapper">
+                        <img src={producto.imagen_url} alt={producto.nombre} />
                     </div>
                 )}
 
-                <h1 style={{ marginBottom: "15px" }}>{producto.nombre}</h1>
-                
-                <p style={{ fontSize: "14px", color: producto.stock > 0 ? "green" : "red", fontWeight: "600" }}>
-                    {producto.stock > 0 ? `Unidades disponibles: ${producto.stock}` : "Producto Agotado"}
-                </p>
+                <div className="product-info-wrapper">
+                    <span className="product-category">{producto.categoria || "Calzado"}</span>
+                    <h1 className="product-title">{producto.nombre}</h1>
+                    
+                    <p className="product-stock-status" style={{ color: tieneStockGlobal ? "#2e7d32" : "#d32f2f" }}>
+                        {tieneStockGlobal ? `✓ Stock disponible: ${producto.stock_total} unidades` : "✗ Producto Agotado"}
+                    </p>
 
-                <p style={{ fontSize: "28px", fontWeight: "bold", margin: "20px 0" }}>
-                    ${Number(producto.precio).toFixed(2)}
-                </p>
+                    <p className="product-price-tag">${Number(producto.precio).toFixed(2)}</p>
 
-                <div style={{ backgroundColor: "#f9f9f9", padding: "15px", borderRadius: "8px", marginBottom: "25px", textAlign: "left" }}>
-                    <h3 style={{ fontSize: "16px", margin: "0 0 5px 0" }}>Descripción del artículo:</h3>
-                    <p style={{ color: "#555", fontSize: "14px", lineHeight: "1.5", margin: 0 }}>{producto.descripcion}</p>
-                </div>
+                    {tieneStockGlobal && coloresDisponibles.length > 0 && (
+                        <div className="colores-container">
+                            <label className="colores-label">1. Selecciona Color:</label>
+                            <div className="colores-grid">
+                                {coloresDisponibles.map((color) => (
+                                    <button
+                                        key={color}
+                                        type="button"
+                                        className={`color-boton ${colorSeleccionado === color ? 'seleccionado' : ''}`}
+                                        onClick={() => {
+                                            setColorSeleccionado(color);
+                                            setTallaSeleccionada(null);
+                                        }}
+                                    >
+                                        {color}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
 
-                <div style={{ display: "flex", justifyContent: "center", gap: "15px" }}>
-                    <button
-                        onClick={() => agregarAlCarrito(producto)}
-                        disabled={producto.stock === 0}
-                        style={{
-                            padding: "12px 24px",
-                            fontSize: "15px",
-                            fontWeight: "bold",
-                            cursor: producto.stock > 0 ? "pointer" : "not-allowed",
-                            background: producto.stock > 0 ? "green" : "lightgray",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "6px",
-                            transition: "background 0.2s"
-                        }}
-                    >
-                        {producto.stock === 0 ? "Agotado" : "Añadir al Carrito"}
-                    </button>
+                    {tieneStockGlobal && colorSeleccionado && (
+                        <div className="tallas-container">
+                            <label className="tallas-label">2. Selecciona Talla (Para color {colorSeleccionado}):</label>
+                            <div className="tallas-grid">
+                                {variantesDelColorElegido.map((variante) => {
+                                    const tieneStockVariante = Number(variante.stock) > 0;
+                                    const esLaTallaSeleccionada = tallaSeleccionada === variante.talla;
 
-                    <Link
-                        to="/productos"
-                        style={{
-                            padding: "12px 24px",
-                            fontSize: "15px",
-                            background: "gray",
-                            color: "white",
-                            borderRadius: "6px",
-                            textDecoration: "none",
-                            display: "inline-block",
-                            fontWeight: "500"
-                        }}
-                    >
-                        Volver a la Tienda
-                    </Link>
-                </div>
+                                    return (
+                                        <button
+                                            key={variante.id_variante}
+                                            type="button"
+                                            disabled={!tieneStockVariante}
+                                            className={`talla-boton ${esLaTallaSeleccionada ? 'seleccionada' : ''}`}
+                                            onClick={() => setTallaSeleccionada(variante.talla)}
+                                        >
+                                            {variante.talla}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
 
+                    <div className="product-description-box">
+                        <h3>Descripción:</h3>
+                        <p>{producto.descripcion}</p>
+                    </div>
+
+                    <div className="product-actions-group">
+                        <button
+                            onClick={handleAgregarAlCarrito}
+                            disabled={!tieneStockGlobal || !colorSeleccionado || !tallaSeleccionada}
+                            className="btn-add-cart"
+                            style={{
+                                cursor: (tieneStockGlobal && colorSeleccionado && tallaSeleccionada) ? "pointer" : "not-allowed",
+                                background: (tieneStockGlobal && colorSeleccionado && tallaSeleccionada) ? "#2e7d32" : "#e0e0e0",
+                                color: (tieneStockGlobal && colorSeleccionado && tallaSeleccionada) ? "white" : "#9e9e9e"
+                            }}
+                        >
+                            {!tieneStockGlobal 
+                                ? "Agotado" 
+                                : !colorSeleccionado 
+                                    ? "Elige un Color" 
+                                    : !tallaSeleccionada 
+                                        ? "Elige una Talla" 
+                                        : "Añadir al Carrito"
+                            }
+                        </button>
+
+                        <Link to="/productos" className="btn-back-store">
+                            Volver
+                        </Link>
+                    </div>
+                </div> 
             </div>
         </div>
     );

@@ -1,0 +1,151 @@
+.categories-container {
+    padding: 30px;
+    max-width: 1100px;
+    margin: 40px auto;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+}
+
+.categories-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #4e342e; /* Color corporativo Dr. Pie */
+    margin-bottom: 30px;
+    border-bottom: 2px solid #eaeaea;
+    padding-bottom: 10px;
+}
+
+/* Distribución UX en dos columnas */
+.categories-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+
+@media (min-width: 768px) {
+    .categories-layout {
+        grid-template-columns: 350px 1fr;
+    }
+}
+
+/* Tarjeta del Formulario (Columna izquierda) */
+.category-card-form {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    height: fit-content;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.category-input {
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.category-input:focus {
+    outline: none;
+    border-color: #c5a059; /* Dorado Dr. Pie */
+    box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.15);
+}
+
+.btn-save {
+    width: 100%;
+    background: #c5a059;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-save:hover {
+    background: #b38f4b;
+}
+
+/* Panel del Listado (Columna derecha) */
+.category-list-wrapper {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.list-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #4e342e;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Tarjetas individuales de cada categoría */
+.category-item-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #fdfbf7;
+    border: 1px solid #f0ede9;
+    border-radius: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.category-item-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+}
+
+.category-name {
+    font-weight: 500;
+    font-size: 1rem;
+    color: #333;
+    margin: 0;
+}
+
+.btn-delete {
+    background: transparent;
+    color: #e53935;
+    border: 1px solid #ffcdd2;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-delete:hover {
+    background: #e53935;
+    color: white;
+    border-color: #e53935;
+}

@@ -1,0 +1,228 @@
+.product-detail-page {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'Poppins', sans-serif;
+}
+
+.product-detail-card {
+    display: grid;
+    grid-template-columns: 1fr; 
+    gap: 40px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    align-items: start;
+}
+
+@media (min-width: 768px) {
+    .product-detail-card {
+        grid-template-columns: 1fr 1fr; 
+        text-align: left; 
+    }
+}
+
+.product-image-wrapper {
+    width: 100%;
+    background: #fdfbf7; 
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #f0ede9;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.01);
+}
+
+.product-image-wrapper img {
+    width: 100%;
+    max-height: 420px; 
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.product-image-wrapper img:hover {
+    transform: scale(1.03); 
+}
+
+.product-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    height: 100%;
+}
+
+.product-category {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: #c5a059;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+}
+
+.product-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #4e342e; 
+    margin: 0 0 10px 0;
+    line-height: 1.2;
+}
+
+.product-stock-status {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.product-price-tag {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #333;
+    margin: 15px 0;
+}
+
+.product-description-box {
+    background: #fdfbf7;
+    padding: 15px 20px;
+    border-radius: 8px;
+    border-left: 4px solid #c5a059;
+    margin-bottom: 25px;
+}
+
+.product-description-box h3 {
+    font-size: 0.95rem;
+    margin: 0 0 4px 0;
+    color: #4e342e;
+}
+
+.product-description-box p {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.product-actions-group {
+    display: flex;
+    gap: 15px;
+    margin-top: auto;
+}
+
+.btn-add-cart {
+    flex: 2; 
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.btn-back-store {
+    flex: 1; 
+    padding: 14px;
+    font-size: 1rem;
+    background: #757575;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.btn-back-store:hover {
+    background: #616161;
+}
+
+.colores-container {
+    text-align: left;
+    margin: 20px 0;
+}
+
+.colores-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.colores-grid {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.color-boton {
+    padding: 8px 16px;
+    border: 2px solid #ccc;
+    background: #fff;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.color-boton:hover {
+    border-color: #c5a059;
+}
+
+.color-boton.seleccionado {
+    background: #4e342e;
+    color: #fff;
+    border-color: #4e342e;
+}
+
+.tallas-container {
+    text-align: left;
+    margin: 20px 0;
+}
+
+.tallas-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.tallas-grid {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.talla-boton {
+    padding: 10px 16px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.talla-boton:hover:not(:disabled) {
+    border-color: #c5a059;
+    color: #c5a059;
+}
+
+.talla-boton.seleccionada {
+    background: #4e342e; 
+    color: #fff;
+    border-color: #4e342e;
+}
+
+.talla-boton:disabled {
+    background: #f5f5f5;
+    color: #ccc;
+    border-color: #eaeaea;
+    cursor: not-allowed;
+    text-decoration: line-through;
+    opacity: 0.6;
+}

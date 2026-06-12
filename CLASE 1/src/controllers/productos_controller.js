@@ -24,24 +24,31 @@ export const obtenerProductos = async(req,res) => {
 
 //Get By ID
 
-export const obtenerProductosbyId= async(req,res) =>{
-    const{id} = req.params;
-    const[rows]= await pool.query(`
-        SELECT p.id_producto, p.nombre, p.descripcion, p.marca, p.precio, p.imagen_url, p.activo, c.nombre_categoria AS categoria
-        FROM productos p 
-        INNER JOIN categorias c ON p.id_categoria = c.id_categoria 
-        WHERE p.id_producto=?`,[id]);
+export const obtenerProductosbyId = async(req,res) =>{
+    try {
+        const { id } = req.params;
+        const [rows] = await pool.query(`
+            SELECT p.id_producto, p.nombre, p.descripcion, p.marca, p.precio, p.imagen_url, p.activo, c.nombre_categoria AS categoria
+            FROM productos p 
+            INNER JOIN categorias c ON p.id_categoria = c.id_categoria 
+            WHERE p.id_producto = ?`, [id]);
 
-    if(rows.length===0){
-        return res.status(404).json({error:"Producto no encontrado"});
+        if (rows.length === 0) {
+            return res.status(404).json({ error: "Producto no encontrado" });
+        }
+        const [variantes] = await pool.query("SELECT * FROM variantes_producto WHERE id_producto = ?", [id]);
+        
+        const producto = rows[0];
+        producto.variantes = variantes;
+        const sumaStock = variantes.reduce((total, variante) => total + (Number(variante.stock) || 0), 0);
+        producto.stock_total = sumaStock;
+        res.json(producto);
+
+    } catch (error) {
+        console.error("Error al obtener detalle del producto:", error);
+        res.status(500).json({ error: "Error interno del servidor al cargar el producto" });
     }
-
-    const [variantes] = await pool.query("SELECT * FROM variantes_producto WHERE id_producto = ?", [id]);
-    const producto = rows[0];
-    producto.variantes = variantes;
-
-    res.json(producto);
-}
+};
 
 //Post 
 

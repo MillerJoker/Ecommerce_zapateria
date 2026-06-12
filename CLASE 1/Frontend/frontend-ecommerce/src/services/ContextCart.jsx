@@ -7,8 +7,12 @@ export const CartProvider = ({ children }) => {
 
     const agregarAlCarrito = (producto) => {
         setCarrito((prev) => {
-            const existe = prev.find((item) => item.producto_id === producto.id);
-            
+            const existe = prev.find((item) => 
+                item.producto_id === producto.id_producto && 
+                item.color === producto.color_elegido && 
+                item.talla === producto.talla_elegida
+            );
+
             if (existe) {
                 return prev.map((item) =>
                     item.producto_id === producto.id 
@@ -19,9 +23,11 @@ export const CartProvider = ({ children }) => {
 
             
             return [...prev, {
-                producto_id: producto.id,
-                nombre: producto.nombre || producto.name, 
-                precio: producto.precio || producto.price, 
+                producto_id: producto.id_producto,
+                nombre: producto.nombre, 
+                precio: producto.precio,
+                color: producto.color_elegido, 
+                talla: producto.talla_elegida, 
                 cantidad: 1
             }];
         });

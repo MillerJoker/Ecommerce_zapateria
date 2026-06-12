@@ -8,11 +8,12 @@ import categoriasRoutes from './routes/categoria.js'
 import pedidosRoutes from './routes/pedidos.js';
 import botRoutes from './routes/bot.js';
 import cors from 'cors';
+import contactoRoutes from './routes/contacto.js';
 
 
 const app = express();
 
-const Port = process.env.Port;
+const Port = process.env.PORT;
 
 
 app.use(cors({
@@ -27,7 +28,8 @@ app.use("/api/v1/auth",authRoutes);
 app.use("/api/v1/productos", productoRoutes);
 app.use("/api/v1/categorias",categoriasRoutes);
 app.use("/api/v1/pedidos",pedidosRoutes);
-app.use("/api/v1/bot", botRoutes)
+app.use("/api/v1/bot", botRoutes);
+app.use("/api/v1/contacto",contactoRoutes);
 
 app.use((err,req,res,next) => {
     console.error(`${err.message}`);
