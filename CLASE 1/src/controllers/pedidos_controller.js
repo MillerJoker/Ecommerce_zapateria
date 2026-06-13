@@ -1,13 +1,19 @@
 import pool from "../db/connection.js";
 
-//POST - REALIZAR PEDIDO (Tu lógica intacta y perfecta)
-export const realizarPedido = async(req,res) => {
-    const{carrito, id_direccion, metodo_pago} = req.body;
-    const id_usuario = req.usuario.id;
+//POST - REALIZAR PEDIDO 
+export const realizarPedido = async (req, res) => {
+    // 1. Control de seguridad por si req.usuario llega vacío
+    if (!req.usuario) {
+        return res.status(401).json({ error: "No autorizado. No se encontraron datos de usuario." });
+    }
+
+    // 2. Extraer el id de manera segura
+    const id_usuario = req.usuario.id; 
+    const { carrito, id_direccion, metodo_pago } = req.body;
     let total = 0;
 
-    if(!id_direccion){
-        return res.status(400).json({error:"id_direccion es obligatorio"});
+    if (!id_direccion) {
+        return res.status(400).json({ error: "id_direccion es obligatorio" });
     }
 
     const conexion = await pool.getConnection();
@@ -45,7 +51,7 @@ export const realizarPedido = async(req,res) => {
     }
 }
 
-//GET - OBTENER PEDIDOS (Mejorado con nombres de clientes y ciudades)
+//GET - OBTENER PEDIDOS 
 export const obtenerPedidos = async(req,res) => {
     try {
         const limit = parseInt(req.query.limit) || 10;
