@@ -52,14 +52,33 @@ export const DetailProduct = () => {
         ? producto.variantes.filter(v => v.color === colorSeleccionado)
         : [];
 
+    // CAMBIO CRÍTICO AQUÍ: Extraer el ID de la variante y armar el objeto plano simétrico
     const handleAgregarAlCarrito = () => {
         if (!colorSeleccionado || !tallaSeleccionada) return;
+
+        // Buscamos la variante exacta en base a las dos selecciones del usuario
+        const varianteEncontrada = producto.variantes?.find(
+            v => v.color === colorSeleccionado && v.talla === tallaSeleccionada
+        );
+
+        if (!varianteEncontrada) {
+            alert("La combinación de color y talla seleccionada no está disponible.");
+            return;
+        }
+
+        // Estructura idéntica a la que espera el ContextCart unificado y tu backend
         const productoEspecifico = {
-            ...producto,
-            color_elegido: colorSeleccionado,
-            talla_elegida: tallaSeleccionada
+            id_producto: producto.id_producto,
+            nombre: producto.nombre,
+            precio: Number(producto.precio) || 0,
+            imagen_url: producto.imagen_url,
+            id_variante: varianteEncontrada.id_variante, // <-- Enviamos el ID real de la combinación
+            color: colorSeleccionado,
+            talla: tallaSeleccionada
         };
+
         agregarAlCarrito(productoEspecifico);
+        alert(`¡${producto.nombre} (${colorSeleccionado} - Talla ${tallaSeleccionada}) añadido al carrito!`);
     };
 
     return (

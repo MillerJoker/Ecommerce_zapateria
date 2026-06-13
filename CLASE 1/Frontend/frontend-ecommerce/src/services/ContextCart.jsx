@@ -7,37 +7,42 @@ export const CartProvider = ({ children }) => {
 
     const agregarAlCarrito = (producto) => {
         setCarrito((prev) => {
+            // Evaluamos existencia usando la estructura limpia y simétrica
             const existe = prev.find((item) => 
-                item.producto_id === producto.id_producto && 
-                item.color === producto.color_elegido && 
-                item.talla === producto.talla_elegida
+                item.id_producto === producto.id_producto && 
+                item.id_variante === producto.id_variante &&
+                item.color === producto.color && 
+                item.talla === producto.talla
             );
 
             if (existe) {
                 return prev.map((item) =>
-                    item.producto_id === producto.id_producto && 
-                    item.color === producto.color_elegido && 
-                    item.talla === producto.talla_elegida
+                    item.id_producto === producto.id_producto && 
+                    item.id_variante === producto.id_variante &&
+                    item.color === producto.color && 
+                    item.talla === producto.talla
                         ? { ...item, cantidad: item.cantidad + 1 }
                         : item
                 );
             }
 
+            // Insertamos el nuevo objeto garantizando las propiedades esperadas por Carrito.jsx
             return [...prev, {
-                producto_id: producto.id_producto,
-                id_variante: producto.id_variante_elegida, // <-- IMPORTANTE: Guarda el ID de la variante aquí
+                id_producto: producto.id_producto,
+                id_variante: producto.id_variante,
                 nombre: producto.nombre, 
                 precio: producto.precio,
-                color: producto.color_elegido, 
-                talla: producto.talla_elegida, 
+                imagen_url: producto.imagen_url,
+                color: producto.color, 
+                talla: producto.talla, 
                 cantidad: 1
             }];
         });
     };
 
-    const eliminarDelCarrito = (producto_id, color, talla) => {
+    const eliminarDelCarrito = (id_producto, color, talla) => {
         setCarrito(prev => prev.filter(item => 
-            !(item.producto_id === producto_id && item.color === color && item.talla === talla)
+            !(item.id_producto === id_producto && item.color === color && item.talla === talla)
         ));
     };
 

@@ -9,7 +9,6 @@ export const CardProduct = ({ product }) => {
     const tieneStock = product.stock_total > 0;
 
     const handleAgregarInmediato = () => {
-        // Extraemos de forma segura el ID de la variante predeterminada entregada por el Backend
         const idVarianteValida = product.id_variante_predeterminada;
 
         if (!idVarianteValida) {
@@ -17,19 +16,17 @@ export const CardProduct = ({ product }) => {
             return;
         }
 
-        // Si el objeto del producto ya incluye su array de variantes (ej. desde una vista detallada), 
-        // buscamos los atributos reales de esa variante específica.
         const varianteReal = product.variantes?.find(v => v.id_variante === idVarianteValida);
 
+        // Creamos el objeto usando exactamente las mismas propiedades que lee el ContextCart unificado
         const productoConVariante = {
             id_producto: product.id_producto,
             nombre: product.nombre,
             precio: precioNumerico,
             imagen_url: product.imagen_url,
-            // Asignamos las propiedades exactas requeridas por Carrito.jsx y realizarPedido en Express
             id_variante: idVarianteValida, 
-            color: varianteReal ? varianteReal.color : "Negro", // Fallback seguro basado en tus registros SQL
-            talla: varianteReal ? varianteReal.talla : "40"    // Fallback seguro basado en tus registros SQL
+            color: varianteReal ? varianteReal.color : "Negro", 
+            talla: varianteReal ? varianteReal.talla : "40"
         };
         
         agregarAlCarrito(productoConVariante);
@@ -67,16 +64,7 @@ export const CardProduct = ({ product }) => {
             </div>
 
             {product.onSale && (
-                <span style={{
-                    position: 'absolute',
-                    top: '10px',
-                    right: '10px',
-                    background: '#c5a059',
-                    color: 'white',
-                    padding: '2px 8px',
-                    fontSize: '0.7rem',
-                    textTransform: 'uppercase'
-                }}>
+                <span style={{ position: 'absolute', top: '10px', right: '10px', background: '#c5a059', color: 'white', padding: '2px 8px', fontSize: '0.7rem', textTransform: 'uppercase' }}>
                     Oferta
                 </span>
             )}
