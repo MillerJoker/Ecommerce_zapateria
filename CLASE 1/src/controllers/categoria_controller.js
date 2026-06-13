@@ -99,3 +99,28 @@
             res.status(500).json({ error: "Error al habilitar la categoría" });
         }
     }
+
+    //Delete fisico
+    export const destruirCategoriaFisico = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const [resultado] = await pool.query(
+            "DELETE FROM categorias WHERE id_categoria = ?",
+            [id]
+        );
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ error: "Categoría no encontrada" });
+        }
+
+        res.json({ mensaje: "Categoría eliminada permanentemente de la base de datos." });
+    } catch (error) {
+        console.error(error);
+        if (error.code === 'ER_ROW_IS_REFERENCED_2') {
+            return res.status(400).json({ 
+                error: "No se puede eliminar físicamente. Hay productos que pertenecen a esta categoría." 
+            });
+        }
+        res.status(500).json({ error: "Error al eliminar la categoría de forma definitiva" });
+    }
+}

@@ -15,15 +15,17 @@ export const CartProvider = ({ children }) => {
 
             if (existe) {
                 return prev.map((item) =>
-                    item.producto_id === producto.id 
+                    item.producto_id === producto.id_producto && 
+                    item.color === producto.color_elegido && 
+                    item.talla === producto.talla_elegida
                         ? { ...item, cantidad: item.cantidad + 1 }
                         : item
                 );
             }
 
-            
             return [...prev, {
                 producto_id: producto.id_producto,
+                id_variante: producto.id_variante_elegida, // <-- IMPORTANTE: Guarda el ID de la variante aquí
                 nombre: producto.nombre, 
                 precio: producto.precio,
                 color: producto.color_elegido, 
@@ -33,8 +35,10 @@ export const CartProvider = ({ children }) => {
         });
     };
 
-    const eliminarDelCarrito = (producto_id) => {
-        setCarrito(carrito.filter(item => item.producto_id !== producto_id));
+    const eliminarDelCarrito = (producto_id, color, talla) => {
+        setCarrito(prev => prev.filter(item => 
+            !(item.producto_id === producto_id && item.color === color && item.talla === talla)
+        ));
     };
 
     const vaciarCarrito = () => {
@@ -42,7 +46,6 @@ export const CartProvider = ({ children }) => {
     };
 
     return (
-        
         <ContextCart.Provider value={{ carrito, agregarAlCarrito, eliminarDelCarrito, vaciarCarrito }}>
             {children}
         </ContextCart.Provider>

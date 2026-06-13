@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { obtenerCategorias, crearCategoria, actualizarCategoria, eliminarCategoria, habilitarCategoria } from "../controllers/categoria_controller.js";
+import { obtenerCategorias, crearCategoria, actualizarCategoria, eliminarCategoria, habilitarCategoria, destruirCategoriaFisico} from "../controllers/categoria_controller.js";
 import { validarCampos, asynHandler } from "../middlewares/avanzado.js";
 
 const router = Router();
@@ -9,6 +9,7 @@ router.post("/crearCategoria", validarCampos(["nombre_categoria"]), asynHandler(
 router.put("/actualizarCategoria/:id", asynHandler(actualizarCategoria));
 router.delete("/eliminarCategoria/:id", asynHandler(eliminarCategoria));
 router.put("/habilitarCategoria/:id", asynHandler(habilitarCategoria));
+router.delete("/destruirCategoriaFisico/:id", asynHandler(destruirCategoriaFisico));
 
 
 export default router;

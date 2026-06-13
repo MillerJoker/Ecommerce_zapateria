@@ -1,12 +1,18 @@
 import { Router } from "express";
-import { realizarPedido, obtenerPedidos, actualizarPedido, eliminarPedido } from "../controllers/pedidos_controller.js";
-import { verifyToken } from "../middlewares/verifyToken.js";
-import { validarCampos } from "../middlewares/avanzado.js";
+import { 
+    realizarPedido, 
+    obtenerPedidos, 
+    obtenerDetallePedido, 
+    actualizarPedido, 
+    eliminarPedido 
+} from "../controllers/pedidos_controller.js";
+import { asynHandler } from "../middlewares/avanzado.js";
 
 const router = Router();
+router.post("/realizarPedido", asynHandler(realizarPedido));
+router.get("/obtenerPedidos", asynHandler(obtenerPedidos));
+router.get("/obtenerDetallePedido/:id", asynHandler(obtenerDetallePedido));
+router.put("/actualizarPedido/:id", asynHandler(actualizarPedido));
+router.delete("/eliminarPedido/:id", asynHandler(eliminarPedido));
 
-router.post("/realizarPedido", verifyToken, validarCampos(["carrito", "id_direccion"]), realizarPedido);
-router.get("/obtenerPedidos",verifyToken, obtenerPedidos);
-router.put("/:id",actualizarPedido);
-router.delete("/:id",verifyToken,eliminarPedido);
 export default router;
